@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -69,6 +69,9 @@ const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-fu
 export default React.forwardRef((_, cardRef) => {
   // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [sliderRef, setSliderRef] = useState(null);
+  const [cardItems, setCardItems] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
   const sliderSettings = {
     arrows: false,
     infinite: false,
@@ -93,59 +96,20 @@ export default React.forwardRef((_, cardRef) => {
     ]
   };
 
-  /* Change this according to your needs */
-  const cards = [
-    {
-      imageSrc: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80",
-      title: "Tournament #1",
-      entry: "$10",
-      prize: ["1st - $36"],
-      description: "Test text",
-      numEntries: "1",
-      players: ["player1"],
-      maxPlayers: "4"
-    },
-    {
-      imageSrc: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80",
-      title: "Tournament #2",
-      entry: "$10",
-      prize: ["1st - $36"],
-      description: "Test text",
-      numEntries: "2",
-      players: ["player1", "player2"],
-      maxPlayers: "4"
-    },
-    {
-      imageSrc: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80",
-      title: "Tournament #3",
-      entry: "$5",
-      prize: ["1st - $20"],
-      description: "Test text",
-      numEntries: "2",
-      players: ["player1", "player2"],
-      maxPlayers: "4"
-    },
-    {
-      imageSrc: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80",
-      title: "Tournament #4",
-      entry: "$10",
-      prize: ["1st - $60", "2nd - $20"],
-      description: "Test text",
-      numEntries: "2",
-      players: ["player1", "player2"],
-      maxPlayers: "4"
-    },
-    {
-      imageSrc: "https://images.unsplash.com/photo-1578269174936-2709b6aeb913?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80",
-      title: "Tournament #5",
-      entry: "$10",
-      prize: ["1st - $60", "2nd - $20"],
-      description: "Test text",
-      numEntries: "2",
-      players: ["player1", "player2"],
-      maxPlayers: "8"
-    },
-  ]
+  useEffect(() => {
+    fetch("https://w9gox3itmg.execute-api.ap-southeast-2.amazonaws.com/dev")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setCardItems(result);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  }, [])
 
   return (
     <Container>
@@ -158,14 +122,14 @@ export default React.forwardRef((_, cardRef) => {
           </Controls>
         </HeadingWithControl>
         <CardSlider ref={setSliderRef} {...sliderSettings}>
-          {cards.map((card, index) => (
+          {cardItems.map((card, index) => (
             <Card key={index}>
               <CardImage imageSrc={card.imageSrc} />
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{card.title}</Title>
                   <EntryInfo>
-                    <Entry>{card.numEntries}/{card.maxPlayers}</Entry>
+                    <Entry>{card.players.length}/{card.maxPlayers}</Entry>
                   </EntryInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
@@ -173,7 +137,9 @@ export default React.forwardRef((_, cardRef) => {
                     <IconContainer>
                       <StarIcon />
                     </IconContainer>
-                    <Text>{card.prize}</Text>
+                    {card.prize.map((prizeTier, index) => (
+                      <Text key={index}>{prizeTier}</Text>
+                    ))}
                   </IconWithText>
                   <IconWithText>
                     <IconContainer>
