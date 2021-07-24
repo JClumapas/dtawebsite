@@ -8,17 +8,17 @@ import Cards from "components/cards/ThreeColSlider"
 // import Cards from "components/cards/TabCardGrid"
 
 function App() {
-  // const cardsRef = useRef(null);
+  const cardsRef = useRef(null);
   // useEffect(() => {
   //   console.log(cardsRef.current);
   // }, []);
   // const [cardsRef, setCardsRef] = useState(null);
-  // const gotoCards = () => cardsRef.current;
+  const gotoCards = () => cardsRef.current.scrollIntoView();
 
   return (
     <AnimationRevealPage>
-      <Hero />
-      <Cards />
+      <Hero primaryActionFun={gotoCards}/>
+      <Cards ref={cardsRef} />
     </AnimationRevealPage>
   );
 }
