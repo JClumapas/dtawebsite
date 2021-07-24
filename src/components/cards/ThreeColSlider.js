@@ -43,13 +43,13 @@ const TextInfo = tw.div`py-6 sm:px-10 sm:py-6`;
 const TitleReviewContainer = tw.div`flex flex-col sm:flex-row sm:justify-between sm:items-center`;
 const Title = tw.h5`text-2xl font-bold`;
 
-const RatingsInfo = styled.div`
+const EntryInfo = styled.div`
   ${tw`flex items-center sm:ml-4 mt-2 sm:mt-0`}
   svg {
     ${tw`w-6 h-6 text-yellow-500 fill-current`}
   }
 `;
-const Rating = tw.span`ml-2 font-bold`;
+const Entry = tw.span`ml-2 font-bold`;
 
 const Description = tw.p`text-sm leading-loose mt-2 sm:mt-4`;
 
@@ -62,6 +62,8 @@ const IconContainer = styled.div`
   }
 `;
 const Text = tw.div`ml-2 text-sm font-semibold text-gray-800`;
+const PlayerList = tw.ol`flex flex-col`;
+const Player = tw.li`list-decimal`;
 
 const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
 export default React.forwardRef((_, cardRef) => {
@@ -141,7 +143,7 @@ export default React.forwardRef((_, cardRef) => {
       description: "Test text",
       numEntries: "2",
       players: ["player1", "player2"],
-      maxPlayers: "4"
+      maxPlayers: "8"
     },
   ]
 
@@ -162,9 +164,9 @@ export default React.forwardRef((_, cardRef) => {
               <TextInfo>
                 <TitleReviewContainer>
                   <Title>{card.title}</Title>
-                  <RatingsInfo>
-                    <Rating>{card.numEntries}/{card.maxPlayers}</Rating>
-                  </RatingsInfo>
+                  <EntryInfo>
+                    <Entry>{card.numEntries}/{card.maxPlayers}</Entry>
+                  </EntryInfo>
                 </TitleReviewContainer>
                 <SecondaryInfoContainer>
                   <IconWithText>
@@ -182,9 +184,11 @@ export default React.forwardRef((_, cardRef) => {
                 </SecondaryInfoContainer>
                 <Description>{card.description}</Description>
                 <br/>
-                {card.players.map((player, index) => (
-                  <p>{index + 1}. {player}</p>
-                ))}
+                <PlayerList>
+                  {card.players.map((player, index) => (
+                    <Player key={index}>{player}</Player>
+                  ))}
+                </PlayerList>
               </TextInfo>
               <PrimaryButton>Enter</PrimaryButton>
             </Card>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import './App.css';
 import "style.css"
 import "tailwindcss/dist/base.css"
@@ -9,11 +9,12 @@ import Cards from "components/cards/ThreeColSlider"
 
 function App() {
   const cardsRef = useRef(null);
-  // useEffect(() => {
-  //   console.log(cardsRef.current);
-  // }, []);
-  // const [cardsRef, setCardsRef] = useState(null);
-  const gotoCards = () => cardsRef.current.scrollIntoView();
+  const gotoCards = () => {
+    cardsRef.current.scrollIntoView({
+      inline: 'end'
+    });
+    cardsRef.current.scrollLeft = 0;
+  }
 
   return (
     <AnimationRevealPage>
