@@ -1,24 +1,25 @@
-import logo from './logo.svg';
+import { useEffect, useRef } from "react";
 import './App.css';
+import "style.css"
+import "tailwindcss/dist/base.css"
+import AnimationRevealPage from "helpers/AnimationRevealPage"
+import Hero from "components/hero/BackgroundAsImageWithCenteredContent"
+import Cards from "components/cards/ThreeColSlider"
+// import Cards from "components/cards/TabCardGrid"
 
 function App() {
+  // const cardsRef = useRef(null);
+  // useEffect(() => {
+  //   console.log(cardsRef.current);
+  // }, []);
+  // const [cardsRef, setCardsRef] = useState(null);
+  // const gotoCards = () => cardsRef.current;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimationRevealPage>
+      <Hero />
+      <Cards />
+    </AnimationRevealPage>
   );
 }
 
