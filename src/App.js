@@ -1,26 +1,23 @@
-import { useRef } from "react";
+import {
+  BrowserRouter as Router,
+  Route
+} from "react-router-dom";
 import './App.css';
-import "style.css"
-import "tailwindcss/dist/base.css"
-import AnimationRevealPage from "helpers/AnimationRevealPage"
-import Hero from "components/hero/BackgroundAsImageWithCenteredContent"
-import Cards from "components/cards/ThreeColSlider"
-// import Cards from "components/cards/TabCardGrid"
+import "style.css";
+import "tailwindcss/dist/base.css";
+import Home from "pages/Home";
+import OpenTournaments from "pages/OpenTournament";
 
 function App() {
-  const cardsRef = useRef(null);
-  const gotoCards = () => {
-    cardsRef.current.scrollIntoView({
-      inline: 'end'
-    });
-    cardsRef.current.scrollLeft = 0;
-  }
-
   return (
-    <AnimationRevealPage>
-      <Hero primaryActionFun={gotoCards}/>
-      <Cards ref={cardsRef} />
-    </AnimationRevealPage>
+    <Router>
+      <Route path="/" component={Home} exact />
+      <Route path="/open-tournaments" component={OpenTournaments} />
+      {/* <AnimationRevealPage>
+        // <Hero primaryActionFun={gotoCards}/>
+        // <Cards ref={cardsRef} /> }
+      </AnimationRevealPage> */}
+    </Router>
   );
 }
 

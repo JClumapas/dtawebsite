@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 
-import Header, { NavLink, NavLinks, PrimaryLink as PrimaryLinkBase, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
+import Header, { NavLink, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
 
 const StyledHeader = styled(Header)`
   ${tw`pt-8 max-w-none w-full`}
@@ -15,9 +16,8 @@ const StyledHeader = styled(Header)`
   }
 `;
 
-const PrimaryLink = tw(PrimaryLinkBase)`rounded-full`
 const Container = styled.div`
-  ${tw`relative -mx-8 -mt-8 bg-center bg-cover h-screen min-h-144`}
+  ${tw`relative -mx-8 -mt-8 -mb-8 bg-center bg-cover h-screen min-h-144`}
   background-image: url("https://images.unsplash.com/photo-1464802686167-b939a6910659?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1333&q=80");
 `;
 
@@ -36,31 +36,21 @@ const Heading = styled.h1`
 const PrimaryAction = tw.button`rounded-full px-8 py-3 mt-10 text-sm sm:text-base sm:mt-16 sm:px-8 sm:py-4 bg-gray-100 font-bold shadow transition duration-300 bg-primary-500 text-gray-100 hocus:bg-primary-700 hocus:text-gray-200 focus:outline-none focus:shadow-outline`;
 
 const Hero = (props) => {
-  const navLinks = [
-    <NavLinks key={1}>
-      <NavLink href="#">
-        About
-      </NavLink>
-    </NavLinks>,
-    <NavLinks key={2}>
-      <PrimaryLink href="/#">
-        WIP
-      </PrimaryLink>
-    </NavLinks>
-  ];
 
   return (
     <Container>
       <OpacityOverlay />
       <HeroContainer>
-        <StyledHeader links={navLinks} />
+        <StyledHeader />
         <Content>
           <Heading>
               Play tournaments online
               <br />
               through discord!
           </Heading>
-          <PrimaryAction onClick={props.primaryActionFun}>Play Now!</PrimaryAction>
+          <Link to="/open-tournaments">
+            <PrimaryAction>Play Now!</PrimaryAction>
+          </Link>
         </Content>
       </HeroContainer>
     </Container>

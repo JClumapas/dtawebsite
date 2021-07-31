@@ -9,7 +9,19 @@ import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
 
-const Container = tw.div`relative`;
+import Header, { NavLink, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
+
+const StyledHeader = styled(Header)`
+  ${tw`pt-8 max-w-none w-full`}
+  ${DesktopNavLinks} ${NavLink}, ${LogoLink} {
+    ${tw`text-gray-100 hover:border-gray-300 hover:text-gray-300`}
+  }
+  ${NavToggle}.closed {
+    ${tw`text-gray-100 hover:text-primary-500`}
+  }
+`;
+
+const Container = tw.div`relative -mx-8 -mt-8 -mb-8 bg-gray-400 h-screen min-h-144`;
 const Content = tw.div`max-w-screen-xl mx-auto py-16 lg:py-20`;
 
 const HeadingWithControl = tw.div`flex flex-col items-center sm:items-stretch sm:flex-row justify-between`;
@@ -115,7 +127,7 @@ const Cards = React.forwardRef((_, cardRef) => {
   if (!isLoaded)
   {
     return (
-      <h1>Loading</h1>
+      <h1>Loading...</h1>
     )
   }
   if (error)
@@ -127,6 +139,7 @@ const Cards = React.forwardRef((_, cardRef) => {
 
   return (
     <Container>
+      <StyledHeader />
       <Content ref={cardRef}>
         <HeadingWithControl>
           <Heading>Tournaments</Heading>
