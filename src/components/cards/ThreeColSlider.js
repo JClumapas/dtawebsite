@@ -166,7 +166,7 @@ const Cards = React.forwardRef((_, cardRef) => {
                   <TitleReviewContainer>
                     <Title>{card.title}</Title>
                     <EntryInfo>
-                      <Entry>{numPlayers}/{card.maxPlayers}</Entry>
+                      <Entry>Spots: {numPlayers}/{card.maxPlayers}</Entry>
                     </EntryInfo>
                   </TitleReviewContainer>
                   <SecondaryInfoContainer>
