@@ -66,7 +66,7 @@ const PlayerList = tw.ol`flex flex-col`;
 const Player = tw.li`list-decimal`;
 
 const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
-export default React.forwardRef((_, cardRef) => {
+const Cards = React.forwardRef((_, cardRef) => {
   // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [sliderRef, setSliderRef] = useState(null);
   const [cardItems, setCardItems] = useState([]);
@@ -97,11 +97,12 @@ export default React.forwardRef((_, cardRef) => {
   };
 
   useEffect(() => {
-    fetch("https://w9gox3itmg.execute-api.ap-southeast-2.amazonaws.com/dev")
+    fetch("https://w9gox3itmg.execute-api.ap-southeast-2.amazonaws.com/dev/tournamentbystate/Open")
       .then(res => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
+          console.log(result);
           setCardItems(result);
         },
         (error) => {
@@ -110,6 +111,19 @@ export default React.forwardRef((_, cardRef) => {
         }
       );
   }, [])
+
+  if (!isLoaded)
+  {
+    return (
+      <h1>Loading</h1>
+    )
+  }
+  if (error)
+  {
+    return (
+      <p>error</p>
+    )
+  }
 
   return (
     <Container>
@@ -122,45 +136,54 @@ export default React.forwardRef((_, cardRef) => {
           </Controls>
         </HeadingWithControl>
         <CardSlider ref={setSliderRef} {...sliderSettings}>
-          {cardItems.map((card, index) => (
-            <Card key={index}>
-              <CardImage imageSrc={card.imageSrc} />
-              <TextInfo>
-                <TitleReviewContainer>
-                  <Title>{card.title}</Title>
-                  <EntryInfo>
-                    <Entry>{card.players.length}/{card.maxPlayers}</Entry>
-                  </EntryInfo>
-                </TitleReviewContainer>
-                <SecondaryInfoContainer>
-                  <IconWithText>
-                    <IconContainer>
-                      <StarIcon />
-                    </IconContainer>
-                    {card.prize.map((prizeTier, index) => (
-                      <Text key={index}>{prizeTier}</Text>
-                    ))}
-                  </IconWithText>
-                  <IconWithText>
-                    <IconContainer>
-                      <PriceIcon />
-                    </IconContainer>
-                    <Text>{card.entry}</Text>
-                  </IconWithText>
-                </SecondaryInfoContainer>
-                <Description>{card.description}</Description>
-                <br/>
-                <PlayerList>
-                  {card.players.map((player, index) => (
-                    <Player key={index}>{player}</Player>
-                  ))}
-                </PlayerList>
-              </TextInfo>
-              <PrimaryButton>Enter</PrimaryButton>
-            </Card>
-          ))}
+          {cardItems.map((card, index) => {
+            var numPlayers = 0;
+            var playersList = null;
+            if (card.players !== undefined)
+            {
+              numPlayers = card.players.length;
+              playersList = card.players.map((player, index) => {
+                return <Player key={index}>{player}</Player>
+              })
+            }
+            return (
+              <Card key={index}>
+                <CardImage imageSrc={card.imageSrc} />
+                <TextInfo>
+                  <TitleReviewContainer>
+                    <Title>{card.title}</Title>
+                    <EntryInfo>
+                      <Entry>{numPlayers}/{card.maxPlayers}</Entry>
+                    </EntryInfo>
+                  </TitleReviewContainer>
+                  <SecondaryInfoContainer>
+                    <IconWithText>
+                      <IconContainer>
+                        <StarIcon />
+                      </IconContainer>
+                      <Text>{card.prize}</Text>
+                    </IconWithText>
+                    <IconWithText>
+                      <IconContainer>
+                        <PriceIcon />
+                      </IconContainer>
+                      <Text>{card.entry}</Text>
+                    </IconWithText>
+                  </SecondaryInfoContainer>
+                  <Description>{card.description}</Description>
+                  <br/>
+                  <PlayerList>
+                    {playersList}
+                  </PlayerList>
+                </TextInfo>
+                <PrimaryButton>Enter</PrimaryButton>
+              </Card>
+            )
+          })}
         </CardSlider>
       </Content>
     </Container>
   );
 });
+
+export default Cards;
