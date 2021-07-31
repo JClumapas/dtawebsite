@@ -73,7 +73,6 @@ const Nav = ({ roundedHeaderButton = false, logoLink, links, className, collapse
     <NavLinks key={1}>
       <NavLink href="/open-tournaments">Tournaments</NavLink>
       <NavLink href="/#">About</NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/#">Login</PrimaryLink>
     </NavLinks>
   ];
 

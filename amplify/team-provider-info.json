@@ -1,0 +1,25 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifyd853f0ed588e4-staging-23213-authRole",
+      "UnauthRoleArn": "arn:aws:iam::572587706118:role/amplify-amplifyd853f0ed588e4-staging-23213-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::572587706118:role/amplify-amplifyd853f0ed588e4-staging-23213-authRole",
+      "Region": "ap-southeast-2",
+      "DeploymentBucketName": "amplify-amplifyd853f0ed588e4-staging-23213-deployment",
+      "UnauthRoleName": "amplify-amplifyd853f0ed588e4-staging-23213-unauthRole",
+      "StackName": "amplify-amplifyd853f0ed588e4-staging-23213",
+      "StackId": "arn:aws:cloudformation:ap-southeast-2:572587706118:stack/amplify-amplifyd853f0ed588e4-staging-23213/04b5d330-ef4c-11eb-8855-02c720415562",
+      "AmplifyAppId": "d3w1t2vl7t2rln"
+    },
+    "categories": {
+      "auth": {
+        "dtawebsiteef11f9cc": {
+          "userPoolId": "ap-southeast-2_bIfW1CPac",
+          "userPoolName": "dtawebUsers",
+          "webClientId": "bsn118b36fvqqe6ulbqgk6pks",
+          "nativeClientId": "bsn118b36fvqqe6ulbqgk6pks"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "dtawebsiteef11f9cc": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

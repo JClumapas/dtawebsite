@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Slider from "react-slick";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -8,9 +9,10 @@ import { ReactComponent as PriceIcon } from "feather-icons/dist/icons/dollar-sig
 import { ReactComponent as StarIcon } from "feather-icons/dist/icons/star.svg";
 import { ReactComponent as ChevronLeftIcon } from "feather-icons/dist/icons/chevron-left.svg";
 import { ReactComponent as ChevronRightIcon } from "feather-icons/dist/icons/chevron-right.svg";
+import { Auth, Hub } from "aws-amplify";
+import Header, { PrimaryLink as PrimaryLinkBase, NavLinks, NavLink, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
 
-import Header, { NavLink, LogoLink, NavToggle, DesktopNavLinks } from "../headers/light.js";
-
+const PrimaryLink = tw(PrimaryLinkBase)``
 const StyledHeader = styled(Header)`
   ${tw`pt-8 max-w-none w-full`}
   ${DesktopNavLinks} ${NavLink}, ${LogoLink} {
@@ -78,12 +80,15 @@ const PlayerList = tw.ol`flex flex-col`;
 const Player = tw.li`list-decimal`;
 
 const PrimaryButton = tw(PrimaryButtonBase)`mt-auto sm:text-lg rounded-none w-full rounded sm:rounded-none sm:rounded-br-4xl py-3 sm:py-6`;
+
+
 const Cards = React.forwardRef((_, cardRef) => {
   // useState is used instead of useRef below because we want to re-render when sliderRef becomes available (not null)
   const [sliderRef, setSliderRef] = useState(null);
   const [cardItems, setCardItems] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const history = useHistory();
   const sliderSettings = {
     arrows: false,
     infinite: false,
@@ -107,6 +112,29 @@ const Cards = React.forwardRef((_, cardRef) => {
       },
     ]
   };
+
+  const handleSignOut = async () => {
+    try {
+      await Auth.signOut();
+      Hub.dispatch('UI Auth', {
+        event: 'AuthStateChange',
+        message: 'signedout'
+      });
+      history.push('/');
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  };
+
+  const navLinks = [
+    <NavLinks key={1}>
+      <NavLink href="/open-tournaments">Tournaments</NavLink>
+      <NavLink href="/#">About</NavLink>
+      <button onClick={handleSignOut}>
+        <PrimaryLink>Log Out</PrimaryLink>
+      </button>
+    </NavLinks>
+  ];
 
   useEffect(() => {
     fetch("https://w9gox3itmg.execute-api.ap-southeast-2.amazonaws.com/dev/tournamentbystate/Open")
@@ -139,7 +167,7 @@ const Cards = React.forwardRef((_, cardRef) => {
 
   return (
     <Container>
-      <StyledHeader />
+      <StyledHeader links={navLinks} />
       <Content ref={cardRef}>
         <HeadingWithControl>
           <Heading>Tournaments</Heading>
